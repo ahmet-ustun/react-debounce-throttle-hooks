@@ -1,37 +1,13 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import debounce from "lodash.debounce";
+import React, { useState } from "react";
 
 import "./App.css";
-
-function useDebounce(callback, delay) {
-  const debouncedFn = useCallback(
-    debounce((...args) => callback(...args), delay),
-    [delay] // will recreate if delay changes
-  );
-  return debouncedFn;
-}
-
-function useDebounceAlt(callback, delay) {
-  const memoizedCallback = useCallback(callback, []);
-  const debouncedFn = useRef(debounce(memoizedCallback, delay));
-
-  useEffect(() => {
-    debouncedFn.current = debounce(memoizedCallback, delay);
-  }, [memoizedCallback, debouncedFn, delay]);
-
-  return debouncedFn.current;
-}
 
 function App() {
   const [value, setValue] = useState("");
   const [dbValue, saveToDb] = useState(""); // would be an API call normally
 
-  const debouncedSave = useDebounce((nextValue) => saveToDb(nextValue), 1000);
-
   const handleChange = (event) => {
-    const { value: nextValue } = event.target;
-    setValue(nextValue);
-    debouncedSave(nextValue);
+    setValue(event.target.value);
   };
 
   return (
