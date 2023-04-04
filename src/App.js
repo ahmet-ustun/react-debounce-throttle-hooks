@@ -11,8 +11,9 @@ function useDebounce(callback, delay) {
 function App() {
   const [value, setValue] = useState("");
   const [dbValue, saveToDb] = useState("");
+  const [delay, setDelay] = useState(0);
 
-  const debounceSave = useDebounce((nextValue) => saveToDb(nextValue), 1000);
+  const debounceSave = useDebounce((nextValue) => saveToDb(nextValue), delay);
 
   const handleChange = (event) => {
     const nextValue = event.target.value;
@@ -24,6 +25,14 @@ function App() {
     <main>
       <h1>Blog</h1>
       <textarea value={value} onChange={handleChange} rows={5} cols={50} />
+      <section>
+        <input
+          type="number"
+          value={delay}
+          onChange={(event) => setDelay(event.target.value)}
+        />
+        <span>ms</span>
+      </section>
       <section className="panels">
         <div>
           <h2>Editor (Client)</h2>
