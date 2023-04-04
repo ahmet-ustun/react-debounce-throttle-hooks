@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import debounce from "lodash.debounce";
 
 import "./App.css";
 
 function App() {
   const [value, setValue] = useState("");
-  const [dbValue, saveToDb] = useState(""); // would be an API call normally
-
+  const [dbValue, saveToDb] = useState("");
+  
+  
   const handleChange = (event) => {
-    setValue(event.target.value);
+    const nextValue = event.target.value;
+    const debounceSave = debounce(() => saveToDb(nextValue), 1000);
+    
+    setValue(nextValue);
+    debounceSave();
   };
 
   return (
